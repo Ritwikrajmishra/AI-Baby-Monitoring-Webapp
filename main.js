@@ -5,7 +5,7 @@ objects = [];
 
 function preload()
 {
-    alarm_sound = loadSound("mixkit-alert-alarm-1005.wav");
+    alarm_sound = loadSound("mixkit-alert-alarm-1005.mp3");
 }
 
 function setup()
@@ -16,7 +16,7 @@ function setup()
     video.hide();
     video.size(380, 380);
     objectDetector = ml5.objectDetector('cocossd', modelLoaded);
-    document.getElementById("status").innerHTML = "Status: Detecting Baby";
+    document.getElementById("status").innerHTML = "Detecting Baby";
 }
 
 function modelLoaded()
@@ -36,7 +36,7 @@ function draw()
         objectDetector.detect(video, gotResults);
         for (i = 0; i < objects.length; i++)
         {
-
+            document.getElementById("status").innerHTML = "Baby found";
             fill(r, g, b);
             percent = floor(objects[i].confidence * 100);
             text(objects[i].label + " " + percent + "%", objects[i].x + 15, objects[i].y + 15);
@@ -57,6 +57,7 @@ function draw()
 
         if(objects.length == 0)
         {
+            alarm_sound.play();
             document.getElementById("status").innerHTML = "Baby not found";
         }
     }
