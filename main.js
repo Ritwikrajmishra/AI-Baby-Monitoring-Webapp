@@ -5,7 +5,7 @@ objects = [];
 
 function preload()
 {
-    alarm_sound = loadSound("mixkit=alert-alarm-1005.wav");
+    alarm_sound = loadSound("mixkit-alert-alarm-1005.wav");
 }
 
 function setup()
@@ -36,7 +36,6 @@ function draw()
         objectDetector.detect(video, gotResults);
         for (i = 0; i < objects.length; i++)
         {
-            document.getElementById("status").innerHTML = "Status : Baby Detected";
 
             fill(r, g, b);
             percent = floor(objects[i].confidence * 100);
@@ -45,9 +44,20 @@ function draw()
             stroke(r, g, b);
             rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
         }
-        if(objects[i].label != "person")
+        if(objects[i].label == "person")
         {
+            alarm_sound.stop();
+            document.getElementById("status").innerHTML = "Baby found";
+        }
+
+        else{
             alarm_sound.play();
+            document.getElementById("status").innerHTML = "Baby not found";
+        }
+
+        if(objects.length == 0)
+        {
+            document.getElementById("status").innerHTML = "Baby not found";
         }
     }
 }
